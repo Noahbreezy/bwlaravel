@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-
     /**
      * Display the user's profile.
      */
@@ -21,7 +21,7 @@ class ProfileController extends Controller
         $user = User::findOrFail($id);
         return view('profile.show', ['user' => $user]);
     }
-    
+
     /**
      * Display the user's profile form for editing.
      */
@@ -40,21 +40,28 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(Request $request, $id)
+    public function update(ProfileUpdateRequest $request, $id)
     {
         $user = User::findOrFail($id);
 
-        // Check if the authenticated user is the same as the user being edited or if the authenticated user is an admin
         if (Auth::user()->id == $user->id || Auth::user()->isAdmin()) {
             $user->fill($request->validated());
+
+            if ($request->filled('username')) {
+                $user->username = $request->input('username');
+            }
 
             if ($user->isDirty('email')) {
                 $user->email_verified_at = null;
             }
 
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->input('password'));
+            }
+
             $user->save();
 
-            return Redirect::route('profile.edit', $user->id)->with('status', 'profile-updated');
+            return Redirect::route('profile.edit', $user->id)->with('status', 'profile was updated');
         } else {
             return redirect()->back()->with('error', 'You do not have permission to edit this profile.');
         }
