@@ -10,8 +10,9 @@
         About Us
     </h1>
     <p>
-        Check out this project on <a href="https://github.com/Noahbreezy/backend-web" target="_blank">GitHub</a>.
-        No code was directly taken from any source except for code belonging to the Laravel framework.
+        Check out this project on <a href="https://github.com/Noahbreezy/bwlaravel" target="_blank">GitHub</a>.
+        
+        I have not used any particular sources except the code belonging to the Laravel framework. Github copilot was used as support.
     </p>
 </body>
 </html>

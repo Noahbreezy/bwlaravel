@@ -40,5 +40,8 @@ Route::middleware(['admin'])->group(function () {
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/aboutUs', 'App\Http\Controllers\HomeController@aboutUs');
+Route::get('/about-us', function () {
+    return view('aboutUs');
+})->name('aboutUs');
 
 require __DIR__.'/auth.php';
